@@ -1,5 +1,7 @@
 import java.util.Properties;
 
+
+/*This is a simulator main file which creates sends & then receives message*/
 public class Simulator_CLI {
 
 	public static void main(String[] args) throws Exception {
