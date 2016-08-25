@@ -10,22 +10,28 @@ public class MQTTSend {
     private String content;
     private int qos             = 2;
     private String broker;
-    private String clientId = "JavaClient";
+    private String clientId;
 	
-	public MQTTSend(String broker, String topic, String content){
+	public MQTTSend(String broker, String topic, String content, String clientId){
 		this.topic = topic;
 		this.content = content;
 		this.broker = "tcp://"+broker+":1883";
+		this.clientId = clientId;
 	}
+	
+	public MqttClient createClient() throws MqttException
+	{
+		MqttClient sampleClient = new MqttClient(broker, clientId);
+		return sampleClient;
+	}
+    public void sendMessage(MqttClient sampleClient) {
 
-    public void sendMessage() {
-
-        MemoryPersistence persistence = new MemoryPersistence();
+        //MemoryPersistence persistence = new MemoryPersistence();
 
         try {
-            MqttClient sampleClient = new MqttClient(broker, clientId, persistence);
+            //MqttClient sampleClient = new MqttClient(broker, clientId);
             MqttConnectOptions connOpts = new MqttConnectOptions();
-            connOpts.setCleanSession(false);
+            connOpts.setCleanSession(true);
             System.out.println("Connecting to broker: "+broker);
             sampleClient.connect(connOpts);
             System.out.println("Connected");
@@ -36,7 +42,6 @@ public class MQTTSend {
             System.out.println("Message published");
             sampleClient.disconnect();
             System.out.println("Disconnected");
-            System.exit(0);
         } catch(MqttException me) {
             System.out.println("reason "+me.getReasonCode());
             System.out.println("msg "+me.getMessage());

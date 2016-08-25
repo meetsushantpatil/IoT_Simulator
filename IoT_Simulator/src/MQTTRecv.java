@@ -9,17 +9,19 @@ public class MQTTRecv implements MqttCallback {
 	String receivedMessage;
 	private String brokerIP;
 	private String topic;
+	private String clientId;
 
-	public MQTTRecv(String brokerIP, String topic) {
+	public MQTTRecv(String brokerIP, String topic, String clientId) {
 		this.brokerIP = brokerIP;
 		this.topic = topic;
+		this.clientId = clientId;
 		
 	}
 
 	public MqttClient recvMessage() throws InterruptedException {
 		try {   
 			
-			MqttClient clientR = new MqttClient("tcp://"+brokerIP+":1883", "Receiver");
+			MqttClient clientR = new MqttClient("tcp://"+brokerIP+":1883", clientId);
 			clientR.connect();
 
 			clientR.subscribe(topic);   
